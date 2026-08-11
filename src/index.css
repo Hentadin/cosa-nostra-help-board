@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-guild-red: #dc2626;
+  --color-guild-red-dark: #ff4654;
+  --color-guild-gold: #b8860b;
+  --color-guild-gold-dark: #e0c060;
+  --color-guild-brown: #a06020;
+  --color-guild-brown-dark: #c08040;
+}
+
+body {
+  @apply bg-gray-50 text-gray-900 dark:bg-neutral-950 dark:text-gray-100 antialiased;
+}
