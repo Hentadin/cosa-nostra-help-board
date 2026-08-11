@@ -26,7 +26,7 @@ export function RegisterPage() {
     setError('')
     const validChars = characters.filter((c) => c.name.trim() && c.className)
     if (validChars.length === 0) {
-      setError('Adicione pelo menos 1 personagem.')
+      setError('Adicione pelo menos 1 personagem, camarada.')
       return
     }
     setLoading(true)
@@ -35,7 +35,7 @@ export function RegisterPage() {
       navigate('/')
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Erro ao cadastrar.'
-      if (msg.includes('email-already-in-use')) setError('Este email já está cadastrado.')
+      if (msg.includes('email-already-in-use')) setError('Este email já está alistado.')
       else if (msg.includes('weak-password')) setError('Senha muito fraca (mínimo 6 caracteres).')
       else setError(msg)
     } finally {
@@ -51,7 +51,7 @@ export function RegisterPage() {
         </h1>
         <p className="text-center text-gray-500 dark:text-gray-400 mb-2">Aliste-se, camarada</p>
         <p className="text-center text-xs text-amber-600 dark:text-amber-400 mb-6">
-          Seu cadastro sera revisado pela cuppola antes do acesso ser liberado.
+          Seu cadastro será revisado pela cúpula antes do acesso ser liberado.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -156,7 +156,7 @@ export function RegisterPage() {
         </form>
 
         <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
-          Já tem conta?{' '}
+          Já tem conta, camarada?{' '}
           <Link to="/login" className="text-guild-red dark:text-guild-red-dark font-medium hover:underline">
             Entrar
           </Link>

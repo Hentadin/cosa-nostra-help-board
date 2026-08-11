@@ -18,7 +18,7 @@ export function AdminPage() {
     return (
       <div className="text-center py-16">
         <Shield className="w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600" />
-        <p className="text-gray-400 dark:text-gray-500">Acesso restrito ao mestre da guilda.</p>
+        <p className="text-gray-400 dark:text-gray-500">Acesso restrito à cúpula da Famiglia.</p>
       </div>
     )
   }
@@ -60,7 +60,7 @@ export function AdminPage() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-xl font-bold">Painel do Mestre</h1>
+      <h1 className="text-xl font-bold">Painel da Cúpula</h1>
 
       {pending.length > 0 && (
         <section className="space-y-3">
@@ -166,10 +166,10 @@ export function AdminPage() {
                     <div>
                       <p className="text-sm font-medium">
                         {u.name}
-                        {u.role === 'master' && (
-                          <span className="ml-2 text-xs bg-guild-gold dark:bg-guild-gold-dark text-black px-1.5 py-0.5 rounded font-bold">
-                            MESTRE
-                          </span>
+                  {u.role === 'master' && (
+                    <span className="ml-2 text-xs bg-guild-gold dark:bg-guild-gold-dark text-black px-1.5 py-0.5 rounded font-bold">
+                      CÚPULA
+                    </span>
                         )}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">{u.email}</p>

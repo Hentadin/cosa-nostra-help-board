@@ -1,10 +1,10 @@
 # Famiglia Cosa Nostra
 
-Camaradas da Famiglia, a revolucao chegou.
+Camaradas da Famiglia, a revolução chegou.
 
-Ja ficou com vergonha de pedir ajuda na guild? Ficou parado sem nada pra fazer enquanto o povo precisa de voce? Quer ser o camarada destaque da semana e mostrar que o partido reconhece os verdadeiros herois da linha de frente?
+Já ficou com vergonha de pedir ajuda na guild? Ficou parado sem nada pra fazer enquanto o povo precisa de você? Quer ser o camarada destaque da semana e mostrar que o partido reconhece os verdadeiros heróis da linha de frente?
 
-A **Famiglia Cosa Nostra** e o nosso sistema de ajuda mutua. De cada um conforme sua build, a cada um conforme sua dungeon. Aqui ninguem joga sozinho -- o povo unido jamais sera derrotado, especialmente contra um Royal Gobbal.
+A **Famiglia Cosa Nostra** é o nosso sistema de ajuda mútua. De cada um conforme sua build, a cada um conforme sua dungeon. Aqui ninguém joga sozinho — o povo unido jamais será derrotado, especialmente contra um Royal Gobbal.
 
 ---
 
@@ -12,76 +12,76 @@ A **Famiglia Cosa Nostra** e o nosso sistema de ajuda mutua. De cada um conforme
 
 **https://hentadin.github.io/cosa-nostra-help-board/**
 
-Salva ai. Funciona no celular e no PC. O partido pensou em tudo.
+Salva aí. Funciona no celular e no PC. O partido pensou em tudo.
 
 ---
 
-## Como funciona a revolucao
+## Como funciona a revolução
 
 **1. Aliste-se, camarada**
 
-Clica em Cadastre-se. Preenche seu nome, telefone e seus personagens com a classe de cada um. A lideranca da Famiglia revisa e aprova -- medida de seguranca pra evitar infiltrados. Rapidinho te liberam.
+Clique em Cadastre-se. Preencha seu nome, telefone e seus personagens com a classe de cada um. A liderança da Famiglia revisa e aprova — medida de segurança pra evitar infiltrados. Rapidinho te liberam.
 
 **2. Convoque o partido**
 
-Precisa de reforco? Clica em "+ Novo Pedido" e descreve a missao: dungeon, quest, drop, o que for. Em minutos o pedido ta visivel pra toda a Famiglia.
+Precisa de reforço? Clique em "+ Novo Pedido" e descreva a missão: dungeon, quest, drop, o que for. Em minutos o pedido está visível pra toda a Famiglia.
 
-**3. Avalie a ameaca**
+**3. Avalie a ameaça**
 
-Cada pedido tem barra de dificuldade de 1 a 10. Nivel 1 e Gobbal (moleza, da pra ir de chinelo). Nivel 10 e Royal Gobbal (chama o exercito vermelho). O partido vota e aparece a media -- assim ninguem vai desprevenido pro fronte.
+Cada pedido tem barra de dificuldade de 1 a 10. Nível 1 é Gobbal (moleza, dá pra ir de chinelo). Nível 10 é Royal Gobbal (chama o exército vermelho). O partido vota e aparece a média — assim ninguém vai desprevenido pro fronte.
 
 **4. Atenda ao chamado**
 
-Viu um pedido que voce resolve? Clica em "Aceitar Ajudar". Seu nome, chars, classes e telefone aparecem pra quem pediu. A solidariedade entre camaradas e a base do partido.
+Viu um pedido que você resolve? Clique em "Aceitar Ajudar". Seu nome, chars, classes e telefone aparecem pra quem pediu. A solidariedade entre camaradas é a base do partido.
 
-**5. Declare vitoria**
+**5. Declare vitória**
 
-Missao cumprida? Quem convocou finaliza e escolhe quem realmente ajudou. O ranking do partido atualiza automaticamente. Os verdadeiros camaradas sobem.
+Missão cumprida? Quem convocou finaliza e escolhe quem realmente ajudou. O ranking do partido atualiza automaticamente. Os verdadeiros camaradas sobem.
 
 ---
 
 ## O ranking da Famiglia
 
-Dois rankings que mostram quem esta realmente carregando o partido nas costas:
+Dois rankings que mostram quem está realmente carregando o partido nas costas:
 
-- **Top Helpers** -- os camaradas que mais atenderam chamados. O braco direito da revolucao.
-- **Mais Ajudados** -- quem mais recebeu apoio. Sem vergonha, camarada. Nao existe luta solitaria.
+- **Top Helpers** — os camaradas que mais atenderam chamados. O braço direito da revolução.
+- **Mais Ajudados** — quem mais recebeu apoio. Sem vergonha, camarada. Não existe luta solitária.
 
-A lideranca pode usar esses rankings pra premiar os membros mais dedicados da semana. O partido recompensa quem luta.
+A liderança pode usar esses rankings pra premiar os membros mais dedicados da semana. O partido recompensa quem luta.
 
 ---
 
 ## Encontre um camarada
 
-Na pagina de Ranking tem busca de membros. Digita nome, telefone, char ou classe e acha qualquer pessoa da Famiglia. Perfeito pra localizar alguem no grupo do WhatsApp e alinhar a estrategia antes da batalha.
+Na página de Ranking tem busca de membros. Digite nome, telefone, char ou classe e ache qualquer pessoa da Famiglia. Perfeito pra localizar alguém no grupo do WhatsApp e alinhar a estratégia antes da batalha.
 
 ---
 
 ## Modo escuro noturno
 
-Tem dark mode -- clica no icone de sol/lua la em cima. Fica com as cores oficiais da Famiglia: vermelho, dourado e preto. Elegante como um encontro de cuppola.
+Tem dark mode — clique no ícone de sol/lua lá em cima. Fica com as cores oficiais da Famiglia: vermelho, dourado e preto. Elegante como um encontro de cúpula.
 
 ---
 
-## Duvidas, camarada?
+## Dúvidas, camarada?
 
-Problemas no cadastro, aprovacao pendente ou qualquer duvida: procure alguem da **lideranca** ou manda msg pro **Jonjo** ingame.
+Problemas no cadastro, aprovação pendente ou qualquer dúvida: procure alguém da **liderança** ou mande msg pro **Jonjo** ingame.
 
-A cuppola aprova novos membros e mantem a ordem na Famiglia.
+A cúpula aprova novos membros e mantém a ordem na Famiglia.
 
 ---
 
 ## Em resumo, camarada
 
-| Missao | Procedimento |
+| Missão | Procedimento |
 |---|---|
-| Alistar-se | Cadastre-se > dados + chars > aguarda aprovacao |
-| Convocar o partido | + Novo Pedido > titulo + descricao |
-| Avaliar ameaca | Entra no pedido > barra 1-10 > Vota |
+| Alistar-se | Cadastre-se > dados + chars > aguarda aprovação |
+| Convocar o partido | + Novo Pedido > título + descrição |
+| Avaliar ameaça | Entra no pedido > barra 1-10 > Vota |
 | Atender chamado | Entra no pedido > Aceitar Ajudar |
-| Declarar vitoria | Quem convocou escolhe ajudantes > Finalizar |
+| Declarar vitória | Quem convocou escolhe ajudantes > Finalizar |
 | Encontrar camarada | Ranking > busca por nome/telefone/char |
 
 ---
 
-Feedbacks, ideias, criticas ao partido -- tudo e ouvido. A Famiglia e de todos. Avante, camaradas.
+Feedbacks, ideias, críticas ao partido — tudo é ouvido. A Famiglia é de todos. Avante, camaradas.

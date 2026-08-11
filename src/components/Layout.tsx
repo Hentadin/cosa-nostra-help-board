@@ -42,7 +42,7 @@ export function Layout() {
               <Link
                 to="/admin"
                 className="p-2 rounded-lg hover:bg-guild-red/10 dark:hover:bg-red-900/30 text-guild-red dark:text-guild-red-dark"
-                title="Painel do Mestre"
+                title="Painel da Cúpula"
               >
                 <Shield className="w-5 h-5" />
               </Link>
@@ -74,7 +74,7 @@ export function Layout() {
               </span>
             ))}
             {isMaster && (
-              <span className="ml-auto text-guild-gold dark:text-guild-gold-dark font-bold">MESTRE</span>
+              <span className="ml-auto text-guild-gold dark:text-guild-gold-dark font-bold">CÚPULA</span>
             )}
           </div>
         )}
