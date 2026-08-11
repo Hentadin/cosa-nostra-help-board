@@ -9,8 +9,8 @@ import { UserName } from '../components/UserName'
 
 export function RequestDetailPage() {
   const { id } = useParams<{ id: string }>()
-  const { requests, voteDifficulty, acceptHelp, completeRequest, loading } = useHelpRequests()
-  const { user } = useAuth()
+  const { requests, voteDifficulty, acceptHelp, completeRequest, cancelHelp, cancelRequest, loading } = useHelpRequests()
+  const { user, profile } = useAuth()
   const navigate = useNavigate()
   const [voteValue, setVoteValue] = useState(5)
   const [acceptComment, setAcceptComment] = useState('')
@@ -40,6 +40,8 @@ export function RequestDetailPage() {
   const hasVoted = user ? user.uid in (request.difficultyVotes || {}) : false
   const hasAccepted = user ? (request.helpers || []).includes(user.uid) : false
   const isCompleted = request.status === 'completed'
+  const isCancelled = request.status === 'cancelled'
+  const isMaster = profile?.role === 'master' && profile?.status === 'approved'
 
   return (
     <div className="space-y-6">
@@ -57,9 +59,10 @@ export function RequestDetailPage() {
             <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
               request.status === 'open' ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400' :
               request.status === 'in_progress' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' :
+              request.status === 'cancelled' ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' :
               'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400'
             }`}>
-              {request.status === 'open' ? 'Aberto' : request.status === 'in_progress' ? 'Em andamento' : 'Concluido'}
+              {request.status === 'open' ? 'Aberto' : request.status === 'in_progress' ? 'Em andamento' : request.status === 'cancelled' ? 'Cancelado' : 'Concluido'}
             </span>
           </div>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
@@ -78,7 +81,7 @@ export function RequestDetailPage() {
           <DifficultyBar votes={request.difficultyVotes} />
         </div>
 
-        {!isCompleted && !isCreator && (
+        {!isCompleted && !isCancelled && !isCreator && (
           <div className="p-4 rounded-lg bg-gray-50 dark:bg-neutral-800 space-y-3">
             {!hasVoted && (
               <div>
@@ -127,29 +130,54 @@ export function RequestDetailPage() {
               </div>
             )}
             {hasAccepted && (
-              <p className="text-sm text-green-600 dark:text-green-400 flex items-center gap-1">
-                <ShieldCheck className="w-4 h-4" /> Voce aceitou ajudar
-              </p>
+              <div className="space-y-2">
+                <p className="text-sm text-green-600 dark:text-green-400 flex items-center gap-1">
+                  <ShieldCheck className="w-4 h-4" /> Voce aceitou ajudar
+                </p>
+                <button
+                  onClick={() => cancelHelp(request.id, user!.uid)}
+                  className="text-xs text-red-500 hover:text-red-600 hover:underline"
+                >
+                  Cancelar minha ajuda
+                </button>
+              </div>
             )}
           </div>
         )}
 
-        {isCreator && !isCompleted && (
+        {(isCreator || isMaster) && !isCompleted && !isCancelled && (
           <div className="p-4 rounded-lg bg-gray-50 dark:bg-neutral-800 space-y-3">
-            <h3 className="text-sm font-semibold">Finalizar Pedido</h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Selecione quem realmente te ajudou para atualizar o ranking.
-            </p>
-            {(request.helpers || []).length === 0 ? (
-              <p className="text-sm text-gray-400">Ninguem aceitou ajudar ainda.</p>
-            ) : (
-              <FinalizeForm
-                request={request}
-                onComplete={async (helperIds) => {
-                  await completeRequest(request.id, helperIds)
-                }}
-              />
+            {isCreator && (
+              <>
+                <h3 className="text-sm font-semibold">Finalizar Pedido</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  Selecione quem realmente te ajudou para atualizar o ranking.
+                </p>
+                {(request.helpers || []).length === 0 ? (
+                  <p className="text-sm text-gray-400">Ninguem aceitou ajudar ainda.</p>
+                ) : (
+                  <FinalizeForm
+                    request={request}
+                    onComplete={async (helperIds) => {
+                      await completeRequest(request.id, helperIds)
+                    }}
+                  />
+                )}
+              </>
             )}
+            <button
+              onClick={() => cancelRequest(request.id)}
+              className="w-full py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium text-sm"
+            >
+              {isMaster && !isCreator ? 'Cancelar pedido (Cupula)' : 'Cancelar pedido'}
+            </button>
+          </div>
+        )}
+
+        {isCancelled && (
+          <div className="p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-center">
+            <p className="text-sm font-semibold text-red-600 dark:text-red-400">Este pedido foi cancelado.</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Os comentarios foram encerrados.</p>
           </div>
         )}
 
@@ -171,7 +199,7 @@ export function RequestDetailPage() {
           </div>
         )}
 
-        <CommentsSection requestId={id!} isCompleted={isCompleted} />
+        <CommentsSection requestId={id!} isCompleted={isCompleted} isCancelled={isCancelled} />
       </div>
     </div>
   )
@@ -213,7 +241,7 @@ function HelperCard({ userId, comment, completed }: { userId: string; comment?: 
   )
 }
 
-function CommentsSection({ requestId, isCompleted }: { requestId: string; isCompleted: boolean }) {
+function CommentsSection({ requestId, isCompleted, isCancelled }: { requestId: string; isCompleted: boolean; isCancelled: boolean }) {
   const { comments, loading, addComment } = useComments(requestId)
   const { user, profile } = useAuth()
   const [text, setText] = useState('')
@@ -245,7 +273,7 @@ function CommentsSection({ requestId, isCompleted }: { requestId: string; isComp
         Comentarios ({comments.length})
       </h3>
 
-      {!isCompleted && (
+      {!isCompleted && !isCancelled && (
         <div className="flex gap-2 mb-4">
           <textarea
             value={text}
@@ -275,7 +303,7 @@ function CommentsSection({ requestId, isCompleted }: { requestId: string; isComp
               <span className="text-gray-400 text-xs">{formatTimestamp(c.createdAt)}</span>
             </div>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-0.5">{c.content}</p>
-            {!isCompleted && (
+            {!isCompleted && !isCancelled && (
               <button
                 onClick={() => setReplyTo(replyTo === c.id ? null : c.id)}
                 className="text-xs text-guild-red dark:text-guild-red-dark hover:underline mt-1 flex items-center gap-1"

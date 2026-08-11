@@ -21,7 +21,7 @@ export interface UserProfile {
   createdAt: Record<string, unknown>
 }
 
-export type RequestStatus = 'open' | 'in_progress' | 'completed'
+export type RequestStatus = 'open' | 'in_progress' | 'completed' | 'cancelled'
 
 export interface HelpRequest {
   id: string

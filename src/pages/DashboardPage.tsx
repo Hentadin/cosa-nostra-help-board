@@ -10,7 +10,8 @@ import type { RequestStatus } from '../types'
 const STATUS_CONFIG: Record<RequestStatus, { label: string; icon: typeof AlertCircle; className: string }> = {
   open: { label: 'Abertos', icon: AlertCircle, className: 'text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/20' },
   in_progress: { label: 'Em andamento', icon: Clock, className: 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20' },
-  completed: { label: 'Concluídos', icon: CheckCircle2, className: 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20' },
+  completed: { label: 'Concluidos', icon: CheckCircle2, className: 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20' },
+  cancelled: { label: 'Cancelados', icon: AlertCircle, className: 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20' },
 }
 
 export function DashboardPage() {
@@ -41,14 +42,15 @@ export function DashboardPage() {
 
       <div className="flex gap-2 flex-wrap">
         {([
-          ['all', 'Todos'],
+          ['all' as const, 'Todos'],
           ['open', 'Abertos'],
           ['in_progress', 'Em andamento'],
-          ['completed', 'Concluídos'],
-        ] as const).map(([key, label]) => (
+          ['completed', 'Concluidos'],
+          ['cancelled', 'Cancelados'],
+        ]).map(([key, label]) => (
           <button
             key={key}
-            onClick={() => setFilter(key)}
+            onClick={() => setFilter(key as RequestStatus | 'all')}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               filter === key
                 ? 'bg-guild-red dark:bg-red-600 text-white'

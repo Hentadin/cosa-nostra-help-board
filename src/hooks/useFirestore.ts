@@ -85,7 +85,23 @@ export function useHelpRequests() {
     }
   }
 
-  return { requests, loading, createRequest, voteDifficulty, acceptHelp, completeRequest }
+  const cancelHelp = async (requestId: string, userId: string) => {
+    const ref = doc(db, 'helpRequests', requestId)
+    const snap = await getDoc(ref)
+    if (!snap.exists()) return
+    const helpers = (snap.data().helpers || []).filter((id: string) => id !== userId)
+    const helperComments = { ...(snap.data().helperComments || {}) }
+    delete helperComments[userId]
+    const newStatus = helpers.length === 0 ? 'open' : 'in_progress'
+    await updateDoc(ref, { helpers, helperComments, status: newStatus })
+  }
+
+  const cancelRequest = async (requestId: string) => {
+    const ref = doc(db, 'helpRequests', requestId)
+    await updateDoc(ref, { status: 'cancelled' })
+  }
+
+  return { requests, loading, createRequest, voteDifficulty, acceptHelp, completeRequest, cancelHelp, cancelRequest }
 }
 
 export function useUsers() {
