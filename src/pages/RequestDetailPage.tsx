@@ -174,7 +174,7 @@ function HelperCard({ userId, completed }: { userId: string; completed: boolean 
         : 'border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-800'
     }`}>
       <div className="w-8 h-8 rounded-full bg-guild-red dark:bg-red-600 flex items-center justify-center text-white text-sm font-bold">
-        {helper.name.charAt(0).toUpperCase()}
+        {helper.name?.charAt(0).toUpperCase() || '?'}
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium truncate">{helper.name}</p>
