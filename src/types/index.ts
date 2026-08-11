@@ -34,6 +34,7 @@ export interface HelpRequest {
   helpers: string[]
   helperComments: Record<string, string>
   completedHelpers: string[]
+  cancellationReason?: string
   createdAt: Record<string, unknown>
   completedAt: Record<string, unknown> | null
 }

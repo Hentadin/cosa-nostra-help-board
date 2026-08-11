@@ -14,6 +14,8 @@ export function RequestDetailPage() {
   const navigate = useNavigate()
   const [voteValue, setVoteValue] = useState(5)
   const [acceptComment, setAcceptComment] = useState('')
+  const [showCancelModal, setShowCancelModal] = useState(false)
+  const [cancelReason, setCancelReason] = useState('')
 
   const request = requests.find((r) => r.id === id)
 
@@ -166,7 +168,7 @@ export function RequestDetailPage() {
               </>
             )}
             <button
-              onClick={() => cancelRequest(request.id)}
+              onClick={() => setShowCancelModal(true)}
               className="w-full py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium text-sm"
             >
               {isMaster && !isCreator ? 'Cancelar pedido (Cupula)' : 'Cancelar pedido'}
@@ -177,7 +179,48 @@ export function RequestDetailPage() {
         {isCancelled && (
           <div className="p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-center">
             <p className="text-sm font-semibold text-red-600 dark:text-red-400">Este pedido foi cancelado.</p>
+            {request.cancellationReason && (
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 italic">
+                &ldquo;{request.cancellationReason}&rdquo;
+              </p>
+            )}
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Os comentarios foram encerrados.</p>
+          </div>
+        )}
+
+        {showCancelModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+            <div className="bg-white dark:bg-neutral-900 rounded-xl p-6 max-w-sm w-full mx-4 shadow-xl">
+              <h3 className="text-lg font-bold mb-2">Cancelar pedido</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
+                Por que esta cancelando? Isso ficara visivel no pedido.
+              </p>
+              <textarea
+                value={cancelReason}
+                onChange={(e) => setCancelReason(e.target.value)}
+                rows={3}
+                className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 focus:ring-2 focus:ring-guild-red outline-none resize-none text-sm mb-3"
+                placeholder="Ex: Consegui resolver sozinho..."
+              />
+              <div className="flex gap-2">
+                <button
+                  onClick={() => { setShowCancelModal(false); setCancelReason('') }}
+                  className="flex-1 py-2 rounded-lg border border-gray-300 dark:border-neutral-700 text-sm"
+                >
+                  Voltar
+                </button>
+                <button
+                  onClick={async () => {
+                    await cancelRequest(request.id, cancelReason.trim() || undefined)
+                    setShowCancelModal(false)
+                    setCancelReason('')
+                  }}
+                  className="flex-1 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium"
+                >
+                  Confirmar
+                </button>
+              </div>
+            </div>
           </div>
         )}
 

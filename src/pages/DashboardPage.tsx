@@ -96,10 +96,15 @@ export function DashboardPage() {
                 <div className="mt-2">
                   <DifficultyBar votes={req.difficultyVotes} />
                 </div>
-                {req.status !== 'completed' && (
+                {req.status !== 'completed' && req.status !== 'cancelled' && (
                   <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
                     {req.helpers.length} {req.helpers.length === 1 ? 'pessoa aceitou' : 'pessoas aceitaram'} ajudar
-                    {avg ? ` · Dificuldade média: ${avg.toFixed(1)}` : ''}
+                    {avg ? ` · Dificuldade media: ${avg.toFixed(1)}` : ''}
+                  </p>
+                )}
+                {req.status === 'cancelled' && req.cancellationReason && (
+                  <p className="text-xs text-red-500 dark:text-red-400 mt-2 italic truncate">
+                    &ldquo;{req.cancellationReason}&rdquo;
                   </p>
                 )}
               </Link>

@@ -96,9 +96,9 @@ export function useHelpRequests() {
     await updateDoc(ref, { helpers, helperComments, status: newStatus })
   }
 
-  const cancelRequest = async (requestId: string) => {
+  const cancelRequest = async (requestId: string, reason?: string) => {
     const ref = doc(db, 'helpRequests', requestId)
-    await updateDoc(ref, { status: 'cancelled' })
+    await updateDoc(ref, { status: 'cancelled', cancellationReason: reason || '' })
   }
 
   return { requests, loading, createRequest, voteDifficulty, acceptHelp, completeRequest, cancelHelp, cancelRequest }
