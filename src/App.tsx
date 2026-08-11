@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import { Layout } from './components/Layout'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { LoginPage } from './pages/LoginPage'
@@ -25,31 +26,33 @@ export default function App() {
     <BrowserRouter basename="/cosa-nostra-help-board">
       <AuthProvider>
         <ThemeInit />
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route
-            element={
-              <ProtectedRoute>
-                <Layout />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="/" element={<DashboardPage />} />
-            <Route path="/requests/new" element={<NewRequestPage />} />
-            <Route path="/requests/:id" element={<RequestDetailPage />} />
-            <Route path="/ranking" element={<RankingPage />} />
+        <ErrorBoundary>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
             <Route
-              path="/admin"
               element={
-                <ProtectedRoute masterOnly>
-                  <AdminPage />
+                <ProtectedRoute>
+                  <Layout />
                 </ProtectedRoute>
               }
-            />
-          </Route>
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+            >
+              <Route path="/" element={<DashboardPage />} />
+              <Route path="/requests/new" element={<NewRequestPage />} />
+              <Route path="/requests/:id" element={<RequestDetailPage />} />
+              <Route path="/ranking" element={<RankingPage />} />
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute masterOnly>
+                    <AdminPage />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </ErrorBoundary>
       </AuthProvider>
     </BrowserRouter>
   )

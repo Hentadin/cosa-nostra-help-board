@@ -1,11 +1,11 @@
 import { GobbalIcon, RoyalGobbalIcon } from './Icons'
 
 interface Props {
-  votes: Record<string, number>
+  votes?: Record<string, number>
 }
 
-export function DifficultyBar({ votes }: Props) {
-  const entries = Object.values(votes)
+export function DifficultyBar({ votes = {} }: Props) {
+  const entries = Object.values(votes || {})
   const avg = entries.length > 0
     ? entries.reduce((a, b) => a + b, 0) / entries.length
     : 0
