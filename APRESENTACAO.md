@@ -73,12 +73,12 @@ A cúpula aprova novos membros e mantém a ordem na Famiglia.
 
 *Resumo rápido:*
 
-~Alistar-se~: Cadastre-se > preenche dados + chars > aguarda aprovação
-~Convocar a guilda~: + Novo Pedido > título + descrição
-~Avaliar ameaça~: Entra no pedido > barra 1-10 > Vota
-~Atender chamado~: Entra no pedido > Aceitar Ajudar
-~Declarar vitória~: Quem convocou escolhe ajudantes > Finalizar
-~Encontrar jogador~: Ranking > busca por nome/telefone/char
+*Alistar-se:* Cadastre-se > preenche dados + chars > aguarda aprovação
+*Convocar a guilda:* + Novo Pedido > título + descrição
+*Avaliar ameaça:* Entra no pedido > barra 1-10 > Vota
+*Atender chamado:* Entra no pedido > Aceitar Ajudar
+*Declarar vitória:* Quem convocou escolhe ajudantes > Finalizar
+*Encontrar jogador:* Ranking > busca por nome/telefone/char
 
 ---
 

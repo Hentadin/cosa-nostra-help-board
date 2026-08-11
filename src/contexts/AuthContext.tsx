@@ -59,11 +59,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = async (email: string, password: string, data: Omit<UserProfile, 'id' | 'role' | 'status' | 'helpedCount' | 'wasHelpedCount' | 'createdAt'>) => {
     const cred = await createUserWithEmailAndPassword(auth, email, password)
 
-    const mastersSnap = await getDocs(query(collection(db, 'users'), where('role', '==', 'master')))
-    const isFirst = mastersSnap.empty
     const isPermanentMaster = email === 'henriquedinis@hotmail.com' || email === 'admin@cosaguild.com.br'
-    const role = (isFirst || isPermanentMaster) ? 'master' : 'member'
-    const status = (isFirst || isPermanentMaster) ? 'approved' : 'pending'
+    let role = isPermanentMaster ? 'master' : 'member'
+    let status = isPermanentMaster ? 'approved' : 'pending'
+
+    // Try to check if there are any masters already - if query fails (permission denied), assume there are masters
+    if (!isPermanentMaster) {
+      try {
+        const mastersSnap = await getDocs(query(collection(db, 'users'), where('role', '==', 'master')))
+        if (mastersSnap.empty) {
+          role = 'master'
+          status = 'approved'
+        }
+      } catch {
+        // Permission denied means there are master docs we can't read - we're not first
+      }
+    }
 
     const profileData = {
       ...data,
@@ -75,7 +86,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     await setDoc(doc(db, 'users', cred.user.uid), profileData)
     setProfile({ id: cred.user.uid, ...profileData, createdAt: new Date() } as unknown as UserProfile)
-    setApprovalStatus(status)
+    setApprovalStatus(status as UserStatus)
   }
 
   const logout = async () => {
