@@ -17,6 +17,8 @@ dist-ssr
 *firebase-adminsdk*
 *service-account*
 *-adminsdk-*
+firebase.json
+firestore.rules
 
 # Editor directories and files
 .vscode/*

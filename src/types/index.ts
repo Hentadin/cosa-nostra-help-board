@@ -3,12 +3,17 @@ export interface Character {
   className: string
 }
 
+export type UserRole = 'master' | 'member'
+export type UserStatus = 'pending' | 'approved' | 'rejected'
+
 export interface UserProfile {
   id: string
   name: string
   email: string
   phone: string
   characters: Character[]
+  role: UserRole
+  status: UserStatus
   helpedCount: number
   wasHelpedCount: number
   createdAt: Record<string, unknown>
@@ -29,6 +34,13 @@ export interface HelpRequest {
   createdAt: Record<string, unknown>
   completedAt: Record<string, unknown> | null
 }
+
+export const DOFUS_CLASSES = [
+  'Cra', 'Ecaflip', 'Eliotrope', 'Eniripsa', 'Enutrof',
+  'Feca', 'Foggernaut', 'Forgelance', 'Huppermage', 'Iop',
+  'Masqueraider', 'Osamodas', 'Ouginak', 'Pandawa', 'Rogue',
+  'Sacrier', 'Sadida', 'Sram', 'Xelor',
+] as const
 
 export function formatTimestamp(ts: Record<string, unknown> | null | undefined): string {
   if (!ts) return ''
@@ -56,10 +68,3 @@ export function formatTimestampShort(ts: Record<string, unknown> | null | undefi
   }
   return ''
 }
-
-export const DOFUS_CLASSES = [
-  'Cra', 'Ecaflip', 'Eliotrope', 'Eniripsa', 'Enutrof',
-  'Feca', 'Foggernaut', 'Forgelance', 'Huppermage', 'Iop',
-  'Masqueraider', 'Osamodas', 'Ouginak', 'Pandawa', 'Rogue',
-  'Sacrier', 'Sadida', 'Sram', 'Xelor',
-] as const

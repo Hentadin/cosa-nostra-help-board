@@ -49,7 +49,10 @@ export function RegisterPage() {
         <h1 className="text-2xl font-bold text-center mb-1">
           <span className="text-guild-red dark:text-guild-red-dark">Cosa Nostra</span>
         </h1>
-        <p className="text-center text-gray-500 dark:text-gray-400 mb-8">Cadastro de Membro</p>
+        <p className="text-center text-gray-500 dark:text-gray-400 mb-2">Cadastro de Membro</p>
+        <p className="text-center text-xs text-amber-600 dark:text-amber-400 mb-6">
+          Seu cadastro será revisado pelo mestre da guilda antes do acesso ser liberado.
+        </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
@@ -148,7 +151,7 @@ export function RegisterPage() {
             className="w-full py-2 bg-guild-red hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-500 text-white rounded-lg font-medium flex items-center justify-center gap-2 disabled:opacity-50"
           >
             <UserPlus className="w-4 h-4" />
-            {loading ? 'Cadastrando...' : 'Cadastrar'}
+            {loading ? 'Cadastrando...' : 'Solicitar Cadastro'}
           </button>
         </form>
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import {
   collection, query, orderBy, onSnapshot, addDoc,
-  updateDoc, doc, serverTimestamp, getDoc,
+  updateDoc, doc, serverTimestamp, getDoc, deleteDoc,
 } from 'firebase/firestore'
 import { db } from '../config/firebase'
 import type { HelpRequest, UserProfile } from '../types'
@@ -95,7 +95,23 @@ export function useUsers() {
     return unsub
   }, [])
 
-  return { users, loading }
+  const approveUser = async (userId: string) => {
+    await updateDoc(doc(db, 'users', userId), { status: 'approved' })
+  }
+
+  const rejectUser = async (userId: string) => {
+    await updateDoc(doc(db, 'users', userId), { status: 'rejected' })
+  }
+
+  const deleteUser = async (userId: string) => {
+    await deleteDoc(doc(db, 'users', userId))
+  }
+
+  const updateUser = async (userId: string, data: Partial<UserProfile>) => {
+    await updateDoc(doc(db, 'users', userId), data)
+  }
+
+  return { users, loading, approveUser, rejectUser, deleteUser, updateUser }
 }
 
 export function useUser(id: string | null) {

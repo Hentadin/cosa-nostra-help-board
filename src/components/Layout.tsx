@@ -1,12 +1,13 @@
 import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useTheme } from '../hooks/useTheme'
-import { Sun, Moon, LogOut, Trophy, Home } from 'lucide-react'
+import { Sun, Moon, LogOut, Trophy, Home, Shield } from 'lucide-react'
 
 export function Layout() {
   const { user, profile, logout } = useAuth()
   const { theme, toggle } = useTheme()
   const navigate = useNavigate()
+  const isMaster = profile?.role === 'master' && profile?.status === 'approved'
 
   const handleLogout = async () => {
     await logout()
@@ -37,6 +38,15 @@ export function Layout() {
             >
               <Trophy className="w-5 h-5" />
             </Link>
+            {isMaster && (
+              <Link
+                to="/admin"
+                className="p-2 rounded-lg hover:bg-guild-red/10 dark:hover:bg-red-900/30 text-guild-red dark:text-guild-red-dark"
+                title="Painel do Mestre"
+              >
+                <Shield className="w-5 h-5" />
+              </Link>
+            )}
             <button
               onClick={toggle}
               className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800 text-gray-600 dark:text-gray-400"
@@ -63,6 +73,9 @@ export function Layout() {
                 {c.name} ({c.className})
               </span>
             ))}
+            {isMaster && (
+              <span className="ml-auto text-guild-gold dark:text-guild-gold-dark font-bold">MESTRE</span>
+            )}
           </div>
         )}
       </nav>

@@ -1,8 +1,8 @@
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
-export function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { user, loading } = useAuth()
+export function ProtectedRoute({ children, masterOnly = false }: { children: React.ReactNode; masterOnly?: boolean }) {
+  const { user, loading, approvalStatus } = useAuth()
 
   if (loading) {
     return (
@@ -13,5 +13,47 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
 
   if (!user) return <Navigate to="/login" replace />
+
+  if (masterOnly && approvalStatus !== 'approved') return <Navigate to="/" replace />
+
+  if (approvalStatus === 'pending') {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="text-center max-w-md">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
+            <span className="text-3xl">⏳</span>
+          </div>
+          <h1 className="text-xl font-bold mb-2">Cadastro em Análise</h1>
+          <p className="text-gray-500 dark:text-gray-400 mb-4">
+            Seu cadastro está pendente de aprovação pelo mestre da guilda.
+            Você receberá acesso assim que for aprovado.
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="text-sm text-guild-red dark:text-guild-red-dark hover:underline"
+          >
+            Verificar novamente
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (approvalStatus === 'rejected') {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="text-center max-w-md">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+            <span className="text-3xl">🚫</span>
+          </div>
+          <h1 className="text-xl font-bold mb-2">Cadastro Recusado</h1>
+          <p className="text-gray-500 dark:text-gray-400">
+            Seu cadastro foi recusado. Entre em contato com o mestre da guilda se achar que isso foi um erro.
+          </p>
+        </div>
+      </div>
+    )
+  }
+
   return <>{children}</>
 }

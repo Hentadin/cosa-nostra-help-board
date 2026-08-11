@@ -8,6 +8,7 @@ import { DashboardPage } from './pages/DashboardPage'
 import { NewRequestPage } from './pages/NewRequestPage'
 import { RequestDetailPage } from './pages/RequestDetailPage'
 import { RankingPage } from './pages/RankingPage'
+import { AdminPage } from './pages/AdminPage'
 import { useTheme } from './hooks/useTheme'
 import { useEffect } from 'react'
 
@@ -38,6 +39,14 @@ export default function App() {
             <Route path="/requests/new" element={<NewRequestPage />} />
             <Route path="/requests/:id" element={<RequestDetailPage />} />
             <Route path="/ranking" element={<RankingPage />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute masterOnly>
+                  <AdminPage />
+                </ProtectedRoute>
+              }
+            />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
