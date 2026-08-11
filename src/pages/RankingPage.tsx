@@ -64,7 +64,7 @@ export function RankingPage() {
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium truncate">{u.name}</p>
                     <p className="text-xs text-gray-400 dark:text-gray-500">
-                      {u.characters.slice(0, 2).map((c) => `${c.name} (${c.className})`).join(', ')}
+                      {(u.characters || []).slice(0, 2).map((c) => `${c.name} (${c.className})`).join(', ')}
                     </p>
                   </div>
                   <span className="text-sm font-bold text-guild-red dark:text-guild-red-dark">
@@ -93,7 +93,7 @@ export function RankingPage() {
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium truncate">{u.name}</p>
                     <p className="text-xs text-gray-400 dark:text-gray-500">
-                      {u.characters.slice(0, 2).map((c) => `${c.name} (${c.className})`).join(', ')}
+                      {(u.characters || []).slice(0, 2).map((c) => `${c.name} (${c.className})`).join(', ')}
                     </p>
                   </div>
                   <span className="text-sm font-bold text-guild-red dark:text-guild-red-dark">
@@ -136,7 +136,7 @@ export function RankingPage() {
               <div key={u.id} className="p-3 rounded-lg bg-gray-50 dark:bg-neutral-800">
                 <p className="text-sm font-medium">{u.name}</p>
                 <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-1">
-                  {u.characters.map((c, i) => (
+                  {(u.characters || []).map((c, i) => (
                     <span key={i} className="text-xs text-guild-gold dark:text-guild-gold-dark font-medium">
                       {c.name} ({c.className})
                     </span>

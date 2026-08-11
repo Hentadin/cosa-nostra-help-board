@@ -179,7 +179,7 @@ function HelperCard({ userId, completed }: { userId: string; completed: boolean 
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium truncate">{helper.name}</p>
         <div className="flex gap-1 flex-wrap mt-0.5">
-          {helper.characters.map((c, i) => (
+          {(helper.characters || []).map((c, i) => (
             <span key={i} className="text-xs text-guild-gold dark:text-guild-gold-dark font-medium">
               {c.name} ({c.className})
             </span>
@@ -245,7 +245,7 @@ function FinalizeHelperOption({ userId, selected, onToggle }: { userId: string; 
       <input type="checkbox" checked={selected} onChange={onToggle} className="accent-guild-red" />
       <span className="text-sm">{helper.name}</span>
       <span className="text-xs text-gray-400 dark:text-gray-500">
-        {helper.characters.map((c) => `${c.name} (${c.className})`).join(', ')}
+        {(helper.characters || []).map((c) => `${c.name} (${c.className})`).join(', ')}
       </span>
     </label>
   )

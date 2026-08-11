@@ -68,7 +68,7 @@ export function Layout() {
         {profile && (
           <div className="max-w-4xl mx-auto px-4 pb-2 text-xs text-gray-500 dark:text-gray-400 flex gap-3">
             <span>{profile.name}</span>
-            {profile.characters.slice(0, 2).map((c, i) => (
+            {(profile.characters || []).slice(0, 2).map((c, i) => (
               <span key={i} className="text-guild-red dark:text-guild-red-dark">
                 {c.name} ({c.className})
               </span>

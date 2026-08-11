@@ -74,7 +74,7 @@ export function AdminPage() {
                   <p className="text-sm font-medium">{u.name}</p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">{u.email}</p>
                   <p className="text-xs text-gray-400 dark:text-gray-500">
-                    {u.characters.map((c) => `${c.name} (${c.className})`).join(', ')}
+                    {(u.characters || []).map((c) => `${c.name} (${c.className})`).join(', ')}
                   </p>
                   {u.phone && <p className="text-xs text-gray-400">📱 {u.phone}</p>}
                 </div>
@@ -174,7 +174,7 @@ export function AdminPage() {
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">{u.email}</p>
                       <p className="text-xs text-gray-400 dark:text-gray-500">
-                        {u.characters.map((c) => `${c.name} (${c.className})`).join(', ')}
+                        {(u.characters || []).map((c) => `${c.name} (${c.className})`).join(', ')}
                       </p>
                       {u.phone && <p className="text-xs text-gray-400">📱 {u.phone}</p>}
                     </div>
