@@ -1,57 +1,23 @@
-import { useState, useRef, type FormEvent } from 'react'
+import { useState, type FormEvent } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { useUsers } from '../hooks/useFirestore'
 import { DOFUS_CLASSES, type Character } from '../types'
-import { Save, Camera, Plus, Trash2, User } from 'lucide-react'
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { Save, Plus, Trash2, User } from 'lucide-react'
 
 export function ProfilePage() {
-  const { profile, user } = useAuth()
+  const { profile } = useAuth()
   const { updateUser } = useUsers()
   const [name, setName] = useState(profile?.name || '')
   const [phone, setPhone] = useState(profile?.phone || '')
   const [characters, setCharacters] = useState<Character[]>(profile?.characters || [])
-  const [profilePhoto, setProfilePhoto] = useState(profile?.photoUrl || '')
   const [saving, setSaving] = useState(false)
-  const [uploading, setUploading] = useState<'profile' | number | null>(null)
   const [msg, setMsg] = useState('')
-  const fileRef = useRef<HTMLInputElement>(null)
-  const charFileRefs = useRef<(HTMLInputElement | null)[]>([])
 
   if (!profile) return null
 
   const formatPhone = (v: string) => {
-    const d = v.replace(/\D/g, '').slice(0, 11)
-    if (d.length <= 2) return d
-    if (d.length <= 7) return `(${d.slice(0, 2)}) ${d.slice(2)}`
-    return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`
-  }
-
-  const uploadImage = async (file: File): Promise<string> => {
-    const storage = getStorage()
-    const ext = file.name.split('.').pop() || 'jpg'
-    const path = `photos/${user!.uid}/${Date.now()}.${ext}`
-    const fileRef = ref(storage, path)
-    await uploadBytes(fileRef, file)
-    return getDownloadURL(fileRef)
-  }
-
-  const handleProfilePhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    setUploading('profile')
-    const url = await uploadImage(file)
-    setProfilePhoto(url)
-    setUploading(null)
-  }
-
-  const handleCharPhoto = async (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    setUploading(index)
-    const url = await uploadImage(file)
-    setCharacters(characters.map((c, i) => i === index ? { ...c, photoUrl: url } : c))
-    setUploading(null)
+    const d = v.replace(/[^\d+\-()\s]/g, '')
+    return d
   }
 
   const addChar = () => setCharacters([...characters, { name: '', className: '' }])
@@ -69,7 +35,6 @@ export function ProfilePage() {
         name,
         phone,
         characters: characters.filter((c) => c.name.trim()),
-        photoUrl: profilePhoto,
       })
       setMsg('Perfil salvo com sucesso!')
     } catch {
@@ -92,40 +57,8 @@ export function ProfilePage() {
       )}
 
       <form onSubmit={handleSave} className="space-y-5">
-        <div className="flex items-center gap-4">
-          <div className="relative">
-            <div className={`w-16 h-16 rounded-full flex items-center justify-center overflow-hidden ${
-              profilePhoto ? '' : 'bg-gray-200 dark:bg-neutral-700'
-            }`}>
-              {profilePhoto ? (
-                <img src={profilePhoto} alt="" className="w-full h-full object-cover" />
-              ) : (
-                <User className="w-8 h-8 text-gray-400" />
-              )}
-            </div>
-            <button
-              type="button"
-              onClick={() => fileRef.current?.click()}
-              className="absolute -bottom-1 -right-1 p-1 bg-guild-red dark:bg-red-600 text-white rounded-full"
-              disabled={uploading === 'profile'}
-            >
-              {uploading === 'profile' ? (
-                <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              ) : (
-                <Camera className="w-3 h-3" />
-              )}
-            </button>
-            <input
-              ref={fileRef}
-              type="file"
-              accept="image/*"
-              onChange={handleProfilePhoto}
-              className="hidden"
-            />
-          </div>
-          <div className="text-xs text-gray-400 dark:text-gray-500">
-            {profile.email}
-          </div>
+        <div className="text-xs text-gray-400 dark:text-gray-500">
+          {profile.email}
         </div>
 
         <div>
@@ -145,7 +78,7 @@ export function ProfilePage() {
             type="tel"
             value={phone}
             onChange={(e) => setPhone(formatPhone(e.target.value))}
-            placeholder="(11) 99999-9999"
+            placeholder="(11) 99999-9999 | +351 912 345 678"
             className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 focus:ring-2 focus:ring-guild-red dark:focus:ring-guild-red-dark outline-none"
           />
         </div>
@@ -162,65 +95,31 @@ export function ProfilePage() {
             </button>
           </div>
           {characters.map((char, i) => (
-            <div key={i} className="p-3 rounded-lg border border-gray-200 dark:border-neutral-700 bg-gray-50 dark:bg-neutral-800 space-y-2">
-              <div className="flex gap-2">
-                <div className="relative">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center overflow-hidden ${
-                    char.photoUrl ? '' : 'bg-gray-300 dark:bg-neutral-600'
-                  }`}>
-                    {char.photoUrl ? (
-                      <img src={char.photoUrl} alt="" className="w-full h-full object-cover" />
-                    ) : (
-                      <User className="w-5 h-5 text-gray-500" />
-                    )}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => charFileRefs.current[i]?.click()}
-                    className="absolute -bottom-1 -right-1 p-0.5 bg-guild-gold text-black rounded-full"
-                    disabled={uploading === i}
-                  >
-                    {uploading === i ? (
-                      <div className="w-2.5 h-2.5 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                    ) : (
-                      <Camera className="w-2.5 h-2.5" />
-                    )}
-                  </button>
-                  <input
-                    ref={(el) => { charFileRefs.current[i] = el }}
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => handleCharPhoto(i, e)}
-                    className="hidden"
-                  />
-                </div>
-                <div className="flex-1 flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="Nome do personagem"
-                    value={char.name}
-                    onChange={(e) => updateChar(i, 'name', e.target.value)}
-                    className="flex-1 px-2 py-1.5 rounded border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 focus:ring-2 focus:ring-guild-red dark:focus:ring-guild-red-dark outline-none text-sm"
-                  />
-                  <select
-                    value={char.className}
-                    onChange={(e) => updateChar(i, 'className', e.target.value)}
-                    className="w-28 px-2 py-1.5 rounded border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 focus:ring-2 focus:ring-guild-red dark:focus:ring-guild-red-dark outline-none text-sm"
-                  >
-                    <option value="">Classe</option>
-                    {DOFUS_CLASSES.map((c) => (
-                      <option key={c} value={c}>{c}</option>
-                    ))}
-                  </select>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => removeChar(i)}
-                  className="text-gray-400 hover:text-red-500 p-1"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
+            <div key={i} className="flex gap-2">
+              <input
+                type="text"
+                placeholder="Nome do personagem"
+                value={char.name}
+                onChange={(e) => updateChar(i, 'name', e.target.value)}
+                className="flex-1 px-3 py-2 rounded-lg border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 focus:ring-2 focus:ring-guild-red dark:focus:ring-guild-red-dark outline-none text-sm"
+              />
+              <select
+                value={char.className}
+                onChange={(e) => updateChar(i, 'className', e.target.value)}
+                className="w-28 px-2 py-2 rounded-lg border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 focus:ring-2 focus:ring-guild-red dark:focus:ring-guild-red-dark outline-none text-sm"
+              >
+                <option value="">Classe</option>
+                {DOFUS_CLASSES.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+              <button
+                type="button"
+                onClick={() => removeChar(i)}
+                className="text-gray-400 hover:text-red-500 p-1"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
             </div>
           ))}
         </div>

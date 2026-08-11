@@ -188,16 +188,10 @@ function HelperCard({ userId, comment, completed }: { userId: string; comment?: 
     }`}>
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <p className="text-sm font-medium">{helper.name}</p>
-            {helper.photoUrl && (
-              <img src={helper.photoUrl} alt="" className="w-5 h-5 rounded-full object-cover" />
-            )}
-          </div>
+          <p className="text-sm font-medium">{helper.name}</p>
           <div className="flex gap-1 flex-wrap mt-0.5">
             {(helper.characters || []).map((c, i) => (
               <span key={i} className="text-xs text-guild-gold dark:text-guild-gold-dark font-medium">
-                {c.photoUrl && <img src={c.photoUrl} alt="" className="w-3 h-3 inline rounded-full mr-0.5 object-cover" />}
                 {c.name} ({c.className})
               </span>
             ))}
