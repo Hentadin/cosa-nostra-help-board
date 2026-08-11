@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useHelpRequests, useUser } from '../hooks/useFirestore'
+import { useHelpRequests, useUser, useComments } from '../hooks/useFirestore'
 import { useAuth } from '../contexts/AuthContext'
 import { DifficultyBar } from '../components/DifficultyBar'
-import { ArrowLeft, Check, HandHelping, ShieldCheck, UserCheck } from 'lucide-react'
+import { ArrowLeft, Check, HandHelping, ShieldCheck, UserCheck, Send, MessageCircle, Reply } from 'lucide-react'
 import { formatTimestamp } from '../types'
 
 export function RequestDetailPage() {
@@ -12,6 +12,7 @@ export function RequestDetailPage() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const [voteValue, setVoteValue] = useState(5)
+  const [acceptComment, setAcceptComment] = useState('')
 
   const request = requests.find((r) => r.id === id)
 
@@ -26,7 +27,7 @@ export function RequestDetailPage() {
   if (!request) {
     return (
       <div className="text-center py-16">
-        <p className="text-gray-400 dark:text-gray-500">Pedido não encontrado.</p>
+        <p className="text-gray-400 dark:text-gray-500">Pedido nao encontrado.</p>
         <button onClick={() => navigate('/')} className="mt-4 text-guild-red dark:text-guild-red-dark hover:underline">
           Voltar
         </button>
@@ -35,8 +36,8 @@ export function RequestDetailPage() {
   }
 
   const isCreator = user?.uid === request.creatorId
-  const hasVoted = user ? user.uid in request.difficultyVotes : false
-  const hasAccepted = user ? request.helpers.includes(user.uid) : false
+  const hasVoted = user ? user.uid in (request.difficultyVotes || {}) : false
+  const hasAccepted = user ? (request.helpers || []).includes(user.uid) : false
   const isCompleted = request.status === 'completed'
 
   return (
@@ -57,7 +58,7 @@ export function RequestDetailPage() {
               request.status === 'in_progress' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' :
               'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400'
             }`}>
-              {request.status === 'open' ? 'Aberto' : request.status === 'in_progress' ? 'Em andamento' : 'Concluído'}
+              {request.status === 'open' ? 'Aberto' : request.status === 'in_progress' ? 'Em andamento' : 'Concluido'}
             </span>
           </div>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
@@ -101,22 +102,31 @@ export function RequestDetailPage() {
             )}
             {hasVoted && (
               <p className="text-sm text-gray-500">
-                Seu voto: <span className="font-bold text-guild-red dark:text-guild-red-dark">{request.difficultyVotes[user!.uid]}</span>
+                Seu voto: <span className="font-bold text-guild-red dark:text-guild-red-dark">{(request.difficultyVotes || {})[user!.uid]}</span>
               </p>
             )}
 
             {!hasAccepted && (
-              <button
-                onClick={() => acceptHelp(request.id, user!.uid)}
-                className="w-full py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium flex items-center justify-center gap-2"
-              >
-                <HandHelping className="w-4 h-4" />
-                Aceitar Ajudar
-              </button>
+              <div className="space-y-2">
+                <textarea
+                  value={acceptComment}
+                  onChange={(e) => setAcceptComment(e.target.value)}
+                  placeholder="Como voce pode ajudar? (opcional)"
+                  rows={2}
+                  className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 focus:ring-2 focus:ring-guild-red dark:focus:ring-guild-red-dark outline-none resize-none text-sm"
+                />
+                <button
+                  onClick={() => acceptHelp(request.id, user!.uid, acceptComment || undefined)}
+                  className="w-full py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium flex items-center justify-center gap-2"
+                >
+                  <HandHelping className="w-4 h-4" />
+                  Aceitar Ajudar
+                </button>
+              </div>
             )}
             {hasAccepted && (
               <p className="text-sm text-green-600 dark:text-green-400 flex items-center gap-1">
-                <ShieldCheck className="w-4 h-4" /> Você aceitou ajudar
+                <ShieldCheck className="w-4 h-4" /> Voce aceitou ajudar
               </p>
             )}
           </div>
@@ -128,8 +138,8 @@ export function RequestDetailPage() {
             <p className="text-xs text-gray-500 dark:text-gray-400">
               Selecione quem realmente te ajudou para atualizar o ranking.
             </p>
-            {request.helpers.length === 0 ? (
-              <p className="text-sm text-gray-400">Ninguém aceitou ajudar ainda.</p>
+            {(request.helpers || []).length === 0 ? (
+              <p className="text-sm text-gray-400">Ninguem aceitou ajudar ainda.</p>
             ) : (
               <FinalizeForm
                 request={request}
@@ -141,62 +151,179 @@ export function RequestDetailPage() {
           </div>
         )}
 
-        {request.helpers.length > 0 && (
+        {(request.helpers || []).length > 0 && (
           <div>
             <h3 className="text-sm font-semibold mb-2">
-              {isCompleted ? 'Quem ajudou' : 'Aceitaram ajudar'} ({request.helpers.length})
+              {isCompleted ? 'Quem ajudou' : 'Aceitaram ajudar'} ({(request.helpers || []).length})
             </h3>
             <div className="space-y-2">
-              {request.helpers.map((helperId) => (
+              {(request.helpers || []).map((helperId) => (
                 <HelperCard
                   key={helperId}
                   userId={helperId}
-                  completed={request.completedHelpers.includes(helperId)}
+                  comment={request.helperComments?.[helperId]}
+                  completed={(request.completedHelpers || []).includes(helperId)}
                 />
               ))}
             </div>
           </div>
         )}
+
+        <CommentsSection requestId={id!} isCompleted={isCompleted} />
       </div>
     </div>
   )
 }
 
-function HelperCard({ userId, completed }: { userId: string; completed: boolean }) {
+function HelperCard({ userId, comment, completed }: { userId: string; comment?: string; completed: boolean }) {
   const helper = useUser(userId)
 
   if (!helper) return null
 
   return (
-    <div className={`flex items-center gap-3 p-3 rounded-lg border ${
+    <div className={`p-3 rounded-lg border ${
       completed
         ? 'border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20'
         : 'border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-800'
     }`}>
-      <div className="w-8 h-8 rounded-full bg-guild-red dark:bg-red-600 flex items-center justify-center text-white text-sm font-bold">
-        {helper.name?.charAt(0).toUpperCase() || '?'}
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium truncate">{helper.name}</p>
-        <div className="flex gap-1 flex-wrap mt-0.5">
-          {(helper.characters || []).map((c, i) => (
-            <span key={i} className="text-xs text-guild-gold dark:text-guild-gold-dark font-medium">
-              {c.name} ({c.className})
-            </span>
-          ))}
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2">
+            <p className="text-sm font-medium">{helper.name}</p>
+            {helper.photoUrl && (
+              <img src={helper.photoUrl} alt="" className="w-5 h-5 rounded-full object-cover" />
+            )}
+          </div>
+          <div className="flex gap-1 flex-wrap mt-0.5">
+            {(helper.characters || []).map((c, i) => (
+              <span key={i} className="text-xs text-guild-gold dark:text-guild-gold-dark font-medium">
+                {c.photoUrl && <img src={c.photoUrl} alt="" className="w-3 h-3 inline rounded-full mr-0.5 object-cover" />}
+                {c.name} ({c.className})
+              </span>
+            ))}
+          </div>
+          {comment && (
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 italic">&ldquo;{comment}&rdquo;</p>
+          )}
+          {helper.phone && (
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">&#x1F4F1; {helper.phone}</p>
+          )}
         </div>
-        {helper.phone && (
-          <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">📱 {helper.phone}</p>
+        {completed && (
+          <UserCheck className="w-5 h-5 text-green-600 dark:text-green-400 shrink-0 mt-0.5" />
         )}
       </div>
-      {completed && (
-        <UserCheck className="w-5 h-5 text-green-600 dark:text-green-400 shrink-0" />
-      )}
     </div>
   )
 }
 
-function FinalizeForm({ request, onComplete }: { request: { helpers: string[]; id: string }; onComplete: (ids: string[]) => Promise<void> }) {
+function CommentsSection({ requestId, isCompleted }: { requestId: string; isCompleted: boolean }) {
+  const { comments, loading, addComment } = useComments(requestId)
+  const { user, profile } = useAuth()
+  const [text, setText] = useState('')
+  const [replyTo, setReplyTo] = useState<string | null>(null)
+  const [replyText, setReplyText] = useState('')
+
+  const topLevel = comments.filter((c) => !c.parentId)
+  const repliesOf = (parentId: string) => comments.filter((c) => c.parentId === parentId)
+
+  const handleAdd = async () => {
+    if (!text.trim() || !user) return
+    await addComment(user.uid, profile?.name || '?', text.trim())
+    setText('')
+  }
+
+  const handleReply = async (parentId: string) => {
+    if (!replyText.trim() || !user) return
+    await addComment(user.uid, profile?.name || '?', replyText.trim(), parentId)
+    setReplyText('')
+    setReplyTo(null)
+  }
+
+  if (loading) return null
+
+  return (
+    <div className="border-t border-gray-200 dark:border-neutral-800 pt-4">
+      <h3 className="text-sm font-semibold flex items-center gap-2 mb-3">
+        <MessageCircle className="w-4 h-4" />
+        Comentarios ({comments.length})
+      </h3>
+
+      {!isCompleted && (
+        <div className="flex gap-2 mb-4">
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder="Comente sobre o pedido..."
+            rows={2}
+            className="flex-1 px-3 py-2 rounded-lg border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 focus:ring-2 focus:ring-guild-red dark:focus:ring-guild-red-dark outline-none resize-none text-sm"
+          />
+          <button
+            onClick={handleAdd}
+            disabled={!text.trim()}
+            className="px-3 py-2 bg-guild-red hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-500 text-white rounded-lg text-sm font-medium self-end disabled:opacity-50"
+          >
+            <Send className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+
+      <div className="space-y-3">
+        {topLevel.length === 0 && (
+          <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-4">Nenhum comentario ainda.</p>
+        )}
+        {topLevel.map((c) => (
+          <div key={c.id}>
+            <div className="text-sm">
+              <span className="font-medium text-gray-700 dark:text-gray-300">{c.authorName}</span>{' '}
+              <span className="text-gray-400 text-xs">{formatTimestamp(c.createdAt)}</span>
+            </div>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-0.5">{c.content}</p>
+            {!isCompleted && (
+              <button
+                onClick={() => setReplyTo(replyTo === c.id ? null : c.id)}
+                className="text-xs text-guild-red dark:text-guild-red-dark hover:underline mt-1 flex items-center gap-1"
+              >
+                <Reply className="w-3 h-3" /> Responder
+              </button>
+            )}
+
+            {replyTo === c.id && (
+              <div className="flex gap-2 mt-2 ml-2">
+                <textarea
+                  value={replyText}
+                  onChange={(e) => setReplyText(e.target.value)}
+                  placeholder="Sua resposta..."
+                  rows={2}
+                  className="flex-1 px-3 py-2 rounded-lg border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 focus:ring-2 focus:ring-guild-red dark:focus:ring-guild-red-dark outline-none resize-none text-sm"
+                />
+                <button
+                  onClick={() => handleReply(c.id)}
+                  disabled={!replyText.trim()}
+                  className="px-3 py-2 bg-guild-gold dark:bg-guild-gold-dark hover:brightness-110 text-black rounded-lg text-sm font-medium self-end disabled:opacity-50"
+                >
+                  <Send className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+
+            {repliesOf(c.id).map((r) => (
+              <div key={r.id} className="ml-4 pl-3 border-l-2 border-gray-200 dark:border-neutral-700 mt-2">
+                <div className="text-sm">
+                  <span className="font-medium text-gray-700 dark:text-gray-300">{r.authorName}</span>{' '}
+                  <span className="text-gray-400 text-xs">{formatTimestamp(r.createdAt)}</span>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-0.5">{r.content}</p>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function FinalizeForm({ request, onComplete }: { request: { helpers: string[]; helperComments?: Record<string, string>; id: string }; onComplete: (ids: string[]) => Promise<void> }) {
   const [selected, setSelected] = useState<string[]>([])
   const [submitting, setSubmitting] = useState(false)
 
@@ -216,6 +343,7 @@ function FinalizeForm({ request, onComplete }: { request: { helpers: string[]; i
         <FinalizeHelperOption
           key={helperId}
           userId={helperId}
+          comment={request.helperComments?.[helperId]}
           selected={selected.includes(helperId)}
           onToggle={() => toggle(helperId)}
         />
@@ -231,7 +359,7 @@ function FinalizeForm({ request, onComplete }: { request: { helpers: string[]; i
   )
 }
 
-function FinalizeHelperOption({ userId, selected, onToggle }: { userId: string; selected: boolean; onToggle: () => void }) {
+function FinalizeHelperOption({ userId, comment, selected, onToggle }: { userId: string; comment?: string; selected: boolean; onToggle: () => void }) {
   const helper = useUser(userId)
 
   if (!helper) return null
@@ -243,10 +371,13 @@ function FinalizeHelperOption({ userId, selected, onToggle }: { userId: string; 
         : 'border-gray-200 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-800'
     }`}>
       <input type="checkbox" checked={selected} onChange={onToggle} className="accent-guild-red" />
-      <span className="text-sm">{helper.name}</span>
-      <span className="text-xs text-gray-400 dark:text-gray-500">
-        {(helper.characters || []).map((c) => `${c.name} (${c.className})`).join(', ')}
-      </span>
+      <div className="flex-1 min-w-0">
+        <span className="text-sm">{helper.name}</span>
+        <span className="text-xs text-gray-400 dark:text-gray-500 ml-2">
+          {(helper.characters || []).map((c) => `${c.name} (${c.className})`).join(', ')}
+        </span>
+        {comment && <p className="text-xs text-gray-500 italic mt-0.5">&ldquo;{comment}&rdquo;</p>}
+      </div>
     </label>
   )
 }

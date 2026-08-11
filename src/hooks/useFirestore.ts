@@ -4,7 +4,7 @@ import {
   updateDoc, doc, serverTimestamp, getDoc, deleteDoc,
 } from 'firebase/firestore'
 import { db } from '../config/firebase'
-import type { HelpRequest, UserProfile } from '../types'
+import type { HelpRequest, UserProfile, Comment } from '../types'
 
 export function useHelpRequests() {
   const [requests, setRequests] = useState<HelpRequest[]>([])
@@ -26,6 +26,7 @@ export function useHelpRequests() {
       status: 'open',
       difficultyVotes: {},
       helpers: [],
+      helperComments: {},
       completedHelpers: [],
       createdAt: serverTimestamp(),
       completedAt: null,
@@ -41,15 +42,19 @@ export function useHelpRequests() {
     await updateDoc(ref, { difficultyVotes: votes })
   }
 
-  const acceptHelp = async (requestId: string, userId: string) => {
+  const acceptHelp = async (requestId: string, userId: string, comment?: string) => {
     const ref = doc(db, 'helpRequests', requestId)
     const snap = await getDoc(ref)
     if (!snap.exists()) return
     const helpers = [...(snap.data().helpers || [])]
+    const helperComments = { ...(snap.data().helperComments || {}) }
     if (!helpers.includes(userId)) {
       helpers.push(userId)
-      await updateDoc(ref, { helpers, status: 'in_progress' })
     }
+    if (comment) {
+      helperComments[userId] = comment
+    }
+    await updateDoc(ref, { helpers, helperComments, status: 'in_progress' })
   }
 
   const completeRequest = async (requestId: string, completedHelpers: string[]) => {
@@ -127,4 +132,34 @@ export function useUser(id: string | null) {
   }, [id])
 
   return user
+}
+
+export function useComments(requestId: string | null) {
+  const [comments, setComments] = useState<Comment[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!requestId) { setComments([]); setLoading(false); return }
+    const q = query(
+      collection(db, 'helpRequests', requestId, 'comments'),
+      orderBy('createdAt', 'asc'),
+    )
+    const unsub = onSnapshot(q, (snap) => {
+      setComments(snap.docs.map((d) => ({ id: d.id, ...d.data() } as Comment)))
+      setLoading(false)
+    })
+    return unsub
+  }, [requestId])
+
+  const addComment = async (authorId: string, authorName: string, content: string, parentId: string | null = null) => {
+    await addDoc(collection(db, 'helpRequests', requestId!, 'comments'), {
+      authorId,
+      authorName,
+      content,
+      parentId,
+      createdAt: serverTimestamp(),
+    })
+  }
+
+  return { comments, loading, addComment }
 }

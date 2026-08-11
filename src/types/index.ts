@@ -1,6 +1,7 @@
 export interface Character {
   name: string
   className: string
+  photoUrl?: string
 }
 
 export type UserRole = 'master' | 'member'
@@ -12,6 +13,7 @@ export interface UserProfile {
   email: string
   phone: string
   characters: Character[]
+  photoUrl?: string
   role: UserRole
   status: UserStatus
   helpedCount: number
@@ -30,9 +32,19 @@ export interface HelpRequest {
   status: RequestStatus
   difficultyVotes: Record<string, number>
   helpers: string[]
+  helperComments: Record<string, string>
   completedHelpers: string[]
   createdAt: Record<string, unknown>
   completedAt: Record<string, unknown> | null
+}
+
+export interface Comment {
+  id: string
+  authorId: string
+  authorName: string
+  content: string
+  parentId: string | null
+  createdAt: Record<string, unknown>
 }
 
 export const DOFUS_CLASSES = [

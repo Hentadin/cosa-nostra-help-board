@@ -1,7 +1,7 @@
 import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useTheme } from '../hooks/useTheme'
-import { Sun, Moon, LogOut, Trophy, Home, Shield } from 'lucide-react'
+import { User, Sun, Moon, LogOut, Trophy, Home, Shield } from 'lucide-react'
 
 export function Layout() {
   const { user, profile, logout } = useAuth()
@@ -30,6 +30,13 @@ export function Layout() {
               title="Dashboard"
             >
               <Home className="w-5 h-5" />
+            </Link>
+            <Link
+              to="/profile"
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800 text-gray-600 dark:text-gray-400"
+              title="Meu Perfil"
+            >
+              <User className="w-5 h-5" />
             </Link>
             <Link
               to="/ranking"
