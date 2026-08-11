@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useHelpRequests } from '../hooks/useFirestore'
 import { DifficultyBar } from '../components/DifficultyBar'
 import { formatTimestampShort } from '../types'
+import { UserName } from '../components/UserName'
 import { Plus, Clock, CheckCircle2, AlertCircle } from 'lucide-react'
 import type { RequestStatus } from '../types'
 
@@ -82,7 +83,7 @@ export function DashboardPage() {
                   <div>
                     <h3 className="font-semibold text-gray-900 dark:text-gray-100">{req.title}</h3>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      por {req.creatorName} · {formatTimestampShort(req.createdAt)}
+                      por <UserName name={req.creatorName} userId={req.creatorId} className="font-medium" /> · {formatTimestampShort(req.createdAt)}
                     </p>
                   </div>
                   <span className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${status.className}`}>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useUsers } from '../hooks/useFirestore'
 import { Trophy, HeartHandshake, Search, Phone } from 'lucide-react'
+import { UserName } from '../components/UserName'
 
 export function RankingPage() {
   const { users, loading } = useUsers()
@@ -62,7 +63,7 @@ export function RankingPage() {
                     {i + 1}
                   </span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{u.name}</p>
+                    <UserName name={u.name} userId={u.id} className="text-sm font-medium truncate" />
                     <p className="text-xs text-gray-400 dark:text-gray-500">
                       {(u.characters || []).slice(0, 2).map((c) => `${c.name} (${c.className})`).join(', ')}
                     </p>
@@ -91,7 +92,7 @@ export function RankingPage() {
                     {i + 1}
                   </span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{u.name}</p>
+                    <UserName name={u.name} userId={u.id} className="text-sm font-medium truncate" />
                     <p className="text-xs text-gray-400 dark:text-gray-500">
                       {(u.characters || []).slice(0, 2).map((c) => `${c.name} (${c.className})`).join(', ')}
                     </p>
@@ -134,7 +135,7 @@ export function RankingPage() {
           <div className="space-y-2">
             {filteredMembers.map((u) => (
               <div key={u.id} className="p-3 rounded-lg bg-gray-50 dark:bg-neutral-800">
-                <p className="text-sm font-medium">{u.name}</p>
+                <UserName name={u.name} userId={u.id} />
                 <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-1">
                   {(u.characters || []).map((c, i) => (
                     <span key={i} className="text-xs text-guild-gold dark:text-guild-gold-dark font-medium">

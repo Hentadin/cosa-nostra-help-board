@@ -163,3 +163,25 @@ export function useComments(requestId: string | null) {
 
   return { comments, loading, addComment }
 }
+
+export function useUserRequests(userId: string | null) {
+  const [userRequests, setUserRequests] = useState<HelpRequest[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!userId) { setUserRequests([]); setLoading(false); return }
+
+    const q = query(collection(db, 'helpRequests'), orderBy('createdAt', 'desc'))
+    const unsub = onSnapshot(q, (snap) => {
+      const all = snap.docs.map((d) => ({ id: d.id, ...d.data() } as HelpRequest))
+      const filtered = all.filter(
+        (r) => r.creatorId === userId || (r.helpers || []).includes(userId),
+      )
+      setUserRequests(filtered)
+      setLoading(false)
+    })
+    return unsub
+  }, [userId])
+
+  return { userRequests, loading }
+}

@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { DifficultyBar } from '../components/DifficultyBar'
 import { ArrowLeft, Check, HandHelping, ShieldCheck, UserCheck, Send, MessageCircle, Reply } from 'lucide-react'
 import { formatTimestamp } from '../types'
+import { UserName } from '../components/UserName'
 
 export function RequestDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -62,7 +63,8 @@ export function RequestDetailPage() {
             </span>
           </div>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Criado por <span className="font-medium text-gray-700 dark:text-gray-300">{request.creatorName}</span>
+            Criado por{' '}
+            <UserName name={request.creatorName} userId={request.creatorId} />{' '}
             {' · '}{formatTimestamp(request.createdAt)}
           </p>
         </div>
@@ -188,7 +190,7 @@ function HelperCard({ userId, comment, completed }: { userId: string; comment?: 
     }`}>
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium">{helper.name}</p>
+          <UserName name={helper.name} userId={userId} />
           <div className="flex gap-1 flex-wrap mt-0.5">
             {(helper.characters || []).map((c, i) => (
               <span key={i} className="text-xs text-guild-gold dark:text-guild-gold-dark font-medium">
@@ -269,7 +271,7 @@ function CommentsSection({ requestId, isCompleted }: { requestId: string; isComp
         {topLevel.map((c) => (
           <div key={c.id}>
             <div className="text-sm">
-              <span className="font-medium text-gray-700 dark:text-gray-300">{c.authorName}</span>{' '}
+              <UserName name={c.authorName} userId={c.authorId} className="font-medium" />{' '}
               <span className="text-gray-400 text-xs">{formatTimestamp(c.createdAt)}</span>
             </div>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-0.5">{c.content}</p>
@@ -304,7 +306,7 @@ function CommentsSection({ requestId, isCompleted }: { requestId: string; isComp
             {repliesOf(c.id).map((r) => (
               <div key={r.id} className="ml-4 pl-3 border-l-2 border-gray-200 dark:border-neutral-700 mt-2">
                 <div className="text-sm">
-                  <span className="font-medium text-gray-700 dark:text-gray-300">{r.authorName}</span>{' '}
+                <UserName name={r.authorName} userId={r.authorId} className="font-medium" />{' '}
                   <span className="text-gray-400 text-xs">{formatTimestamp(r.createdAt)}</span>
                 </div>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mt-0.5">{r.content}</p>

@@ -11,6 +11,7 @@ import { RequestDetailPage } from './pages/RequestDetailPage'
 import { RankingPage } from './pages/RankingPage'
 import { AdminPage } from './pages/AdminPage'
 import { ProfilePage } from './pages/ProfilePage'
+import { PublicProfilePage } from './pages/PublicProfilePage'
 import { useTheme } from './hooks/useTheme'
 import { useEffect } from 'react'
 
@@ -43,6 +44,7 @@ export default function App() {
               <Route path="/requests/:id" element={<RequestDetailPage />} />
               <Route path="/ranking" element={<RankingPage />} />
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/profile/:userId" element={<PublicProfilePage />} />
               <Route
                 path="/admin"
                 element={

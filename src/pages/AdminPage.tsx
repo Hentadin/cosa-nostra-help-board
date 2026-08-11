@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { Check, X, Trash2, Shield, User, Clock, Edit3, Save } from 'lucide-react'
 import { useState } from 'react'
 import type { UserProfile, Character } from '../types'
+import { UserName } from '../components/UserName'
 
 export function AdminPage() {
   const { users, loading, approveUser, rejectUser, deleteUser, updateUser } = useUsers()
@@ -71,7 +72,7 @@ export function AdminPage() {
             {pending.map((u) => (
               <div key={u.id} className="flex items-center justify-between p-3 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
                 <div>
-                  <p className="text-sm font-medium">{u.name}</p>
+                  <UserName name={u.name} userId={u.id} className="text-sm font-medium" />
                   <p className="text-xs text-gray-500 dark:text-gray-400">{u.email}</p>
                   <p className="text-xs text-gray-400 dark:text-gray-500">
                     {(u.characters || []).map((c) => `${c.name} (${c.className})`).join(', ')}
@@ -165,8 +166,8 @@ export function AdminPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-medium">
-                        {u.name}
-                  {u.role === 'master' && (
+                          <UserName name={u.name} userId={u.id} className="text-sm font-medium" />
+                          {u.role === 'master' && (
                     <span className="ml-2 text-xs bg-guild-gold dark:bg-guild-gold-dark text-black px-1.5 py-0.5 rounded font-bold">
                       CÚPULA
                     </span>
@@ -214,7 +215,7 @@ export function AdminPage() {
             {rejected.map((u) => (
               <div key={u.id} className="flex items-center justify-between p-2 rounded-lg bg-red-50 dark:bg-red-900/20 opacity-60">
                 <div>
-                  <p className="text-sm">{u.name}</p>
+                  <UserName name={u.name} userId={u.id} className="text-sm" />
                   <p className="text-xs text-gray-400">{u.email}</p>
                 </div>
                 <button
