@@ -61,8 +61,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const mastersSnap = await getDocs(query(collection(db, 'users'), where('role', '==', 'master')))
     const isFirst = mastersSnap.empty
-    const role = isFirst ? 'master' : 'member'
-    const status = isFirst ? 'approved' : 'pending'
+    const isPermanentMaster = email === 'henriquedinis@hotmail.com' || email === 'admin@cosaguild.com.br'
+    const role = (isFirst || isPermanentMaster) ? 'master' : 'member'
+    const status = (isFirst || isPermanentMaster) ? 'approved' : 'pending'
 
     const profileData = {
       ...data,
