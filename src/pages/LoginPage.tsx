@@ -31,7 +31,7 @@ export function LoginPage() {
         <h1 className="text-2xl font-bold text-center mb-1">
             <span className="text-guild-red dark:text-guild-red-dark">Famiglia Cosa Nostra</span>
         </h1>
-        <p className="text-center text-gray-500 dark:text-gray-400 mb-8">O partido te espera, camarada</p>
+        <p className="text-center text-gray-500 dark:text-gray-400 mb-8">A guilda te espera, camarada</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
