@@ -1,89 +1,87 @@
-# 📋 Cosa Nostra Help Board — chegou!
+# Cosa Nostra Help Board
 
-Fala galera! Criei esse sistema pra gente organizar os pedidos de ajuda da guilda. Sem mais bagunça no chat do WhatsApp procurando quem pode ajudar com dungeon, quest ou qualquer missão.
+Ja pensou em pedir ajuda pra alguem da guild mas ficou com vergonha?  
+Ta entediado sem nada pra fazer e quer dar uma forca pra quem precisa?  
+Quer ser o top ajudante da semana e ganhar premios da guild?
 
----
-
-## 🌐 Onde acessar?
-
-👉 **https://hentadin.github.io/cosa-nostra-help-board/**
-
-Salva nos favoritos aí que é rapidinho.
+A gente criou o **Help Board** -- um site simples e direto pra organizar os pedidos de ajuda da Cosa Nostra. A ideia e fortalecer nossa comunidade: todo mundo se ajuda, todo mundo cresce junto.
 
 ---
 
-## 🔧 Como funciona?
+## Onde fica?
 
-### 1️⃣ Cadastro
+**https://hentadin.github.io/cosa-nostra-help-board/**
 
-Clica em **Cadastre-se**, preenche seus dados e **personagens com classe**. Seu cadastro vai pra análise de um mestre, que aprova (é só pra garantir que só membro da guilda entra). Aprovação é rápida!
-
-### 2️⃣ Criar pedido de ajuda
-
-Precisa de ajuda matando algo, completando dungeon, quest? Clica em **+ Novo Pedido**, descreve o que precisa e pronto — fica visível pra todo mundo.
-
-### 3️⃣ Votar dificuldade
-
-Cada pedido tem uma **barra de dificuldade de 1 a 10**. Você vota na dificuldade do pedido:
-- 🟢 **1 = Gobbal** (moleza)
-- 🔴 **10 = Royal Gobbal** (treta forte)
-
-A média de todos os votos aparece na barra pra galera ter noção do challenge.
-
-### 4️⃣ Aceitar ajudar
-
-Viu um pedido que você consegue resolver? Clica em **Aceitar Ajudar**. O criador do pedido vai ver seu nome, seus chars e classes. Seu telefone também aparece se você cadastrou — útil pra combinar pelo WhatsApp.
-
-### 5️⃣ Finalizar
-
-Quando a ajuda rolar, o criador finaliza o pedido **selecionando quem realmente ajudou**. Isso alimenta o ranking.
+Salva ai nos favoritos. Funciona no celular e no PC.
 
 ---
 
-## 🏆 Ranking
+## Como usar
 
-Tem dois rankings atualizados automaticamente:
+**Cadastro**
 
-- **🏅 Top Helpers** — quem mais ajudou os outros
-- **🤝 Mais Ajudados** — quem mais recebeu ajuda
+Clica em Cadastre-se, preenche seu nome, telefone e seus personagens com a classe de cada um. O cadastro passa pela aprovacao da lideranca -- e so pra garantir que so gente da guild entra. Rapidinho liberam.
 
-É o espírito da guilda: todo mundo se ajuda e o ranking mostra quem tá fazendo a diferença.
+**Pedir ajuda**
 
----
+Clica em "+ Novo Pedido" e descreve o que voce precisa: dungeon, quest, drop, matar mob, o que for. O pedido fica visivel pra guild toda.
 
-## 📱 Busca de membros
+**Votar dificuldade**
 
-Na página de **Ranking** tem uma busca de membros: digita nome, telefone, nome do char ou classe e acha qualquer um da guilda rapidinho. Útil pra achar alguém no grupo do WhatsApp.
+Cada pedido tem uma barra de dificuldade de 1 a 10. O nivel 1 e um Gobbal (moleza) e o 10 e um Royal Gobbal (treta pesada). Todo mundo vota e aparece a media -- assim a galera sabe no que ta se metendo.
 
----
+**Aceitar ajudar**
 
-## 🌗 Dark mode
+Viu um pedido que voce manja? Clica em "Aceitar Ajudar". Quem criou o pedido ve seu nome, seus chars, suas classes e seu telefone se voce cadastrou. Facilita combinar no WhatsApp.
 
-Tem dark mode! Clica no ícone de ☀️/🌙 no menu superior pra alternar. Fica lindão com as cores da guilda.
+**Finalizar**
 
----
-
-## 🔑 Masters
-
-Dúvidas, problemas com cadastro, ou quer mudar seus dados? Fala com:
-- **Henrique** — `henriquedinis@hotmail.com`
-- **Admin** — `admin@cosaguild.com.br`
-
-Os masters também aprovam novos cadastros e gerenciam os membros.
+Quando a missao for cumprida, quem criou o pedido finaliza e escolhe quem realmente ajudou. Isso atualiza o ranking automaticamente.
 
 ---
 
-## 📋 Resumindo
+## Ranking
 
-| Ação | Como fazer |
+Tem dois rankings sempre atualizados:
+
+- **Top Helpers** -- quem mais ajudou os outros. Os verdadeiros herois da guild.
+- **Mais Ajudados** -- quem mais recebeu ajuda. Sem vergonha nenhuma, e assim que a comunidade cresce.
+
+A lideranca pode usar esses rankings pra premiar os membros mais ativos da semana.
+
+---
+
+## Busca de membros
+
+Na pagina de Ranking tem uma busca de membros. Digite nome, telefone, nome do char ou classe e ache qualquer pessoa da guild rapidinho. Otimo pra achar alguem no grupo do WhatsApp.
+
+---
+
+## Modo escuro
+
+Tem dark mode. Clica no icone de sol/lua no menu de cima pra alternar. Fica com as cores da nossa guild -- vermelho e dourado no fundo preto.
+
+---
+
+## Duvidas?
+
+Problemas no cadastro, aprovacao pendente ou qualquer duvida: procure alguem da **lideranca** ou manda msg pro **Jonjo** ingame.
+
+A lideranca aprova novos membros e gerencia o sistema.
+
+---
+
+## Resumo rapido
+
+| O que fazer | Como |
 |---|---|
-| **Cadastrar** | Clica em Cadastre-se → preenche dados + chars → aguarda aprovação |
-| **Pedir ajuda** | + Novo Pedido → título + descrição |
-| **Votar dificuldade** | Entra no pedido → arrasta a barra 1-10 → clica Votar |
-| **Se oferecer** | Entra no pedido → clica Aceitar Ajudar |
-| **Concluir** | Quem criou seleciona quem ajudou → clica Finalizar |
-| **Buscar alguém** | Vai no Ranking → digita nome/telefone/char |
+| Cadastrar | Cadastre-se > preenche dados + chars > aguarda aprovacao |
+| Pedir ajuda | + Novo Pedido > titulo + descricao |
+| Votar dificuldade | Entra no pedido > arrasta a barra 1-10 > Vota |
+| Se oferecer | Entra no pedido > Aceitar Ajudar |
+| Concluir | Quem criou escolhe quem ajudou > Finalizar |
+| Buscar alguem | Ranking > busca por nome/telefone/char |
 
 ---
 
-Qualquer feedback, sugestão de melhoria ou ideia de funcionalidade nova é só mandar. O bagulho é nosso! 🍻
+Feedbacks, ideias e sugestoes sao sempre bem-vindos. O bagulho e nosso. Bora fazer a Cosa Nostra crescer.
