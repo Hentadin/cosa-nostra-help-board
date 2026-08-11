@@ -49,8 +49,8 @@ export function ProtectedRoute({ children, masterOnly = false }: { children: Rea
           </div>
           <h1 className="text-xl font-bold mb-2">Cadastro em Analise</h1>
           <p className="text-gray-500 dark:text-gray-400 mb-4">
-            Seu cadastro esta pendente de aprovacao pelo mestre da guilda.
-            Voce recebera acesso assim que for aprovado.
+            Seu cadastro esta pendente de aprovacao pela cuppola.
+            Voce recebera acesso assim que for aprovado, camarada.
           </p>
           <button
             onClick={() => window.location.reload()}

@@ -19,7 +19,7 @@ export function Layout() {
       <nav className="sticky top-0 z-50 bg-white/80 dark:bg-neutral-900/80 backdrop-blur border-b border-gray-200 dark:border-neutral-800">
         <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 font-bold text-lg">
-            <span className="text-guild-red dark:text-guild-red-dark">Cosa Nostra</span>
+            <span className="text-guild-red dark:text-guild-red-dark">Famiglia Cosa Nostra</span>
             <span className="text-gray-400 dark:text-gray-500 hidden sm:inline">Help Board</span>
           </Link>
 
@@ -85,7 +85,7 @@ export function Layout() {
       </main>
 
       <footer className="border-t border-gray-200 dark:border-neutral-800 py-4 text-center text-xs text-gray-400 dark:text-gray-500">
-        Cosa Nostra Help Board — Dofus
+        Famiglia Cosa Nostra — Dofus
       </footer>
     </div>
   )

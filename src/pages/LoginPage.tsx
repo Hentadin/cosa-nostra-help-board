@@ -29,9 +29,9 @@ export function LoginPage() {
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <h1 className="text-2xl font-bold text-center mb-1">
-          <span className="text-guild-red dark:text-guild-red-dark">Cosa Nostra</span>
+            <span className="text-guild-red dark:text-guild-red-dark">Famiglia Cosa Nostra</span>
         </h1>
-        <p className="text-center text-gray-500 dark:text-gray-400 mb-8">Help Board</p>
+        <p className="text-center text-gray-500 dark:text-gray-400 mb-8">O partido te espera</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
