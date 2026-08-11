@@ -1,6 +1,7 @@
 import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useTheme } from '../hooks/useTheme'
+import { usePendingNotifications } from '../hooks/usePendingNotifications'
 import { User, Sun, Moon, LogOut, Trophy, Home, Shield } from 'lucide-react'
 
 export function Layout() {
@@ -8,6 +9,8 @@ export function Layout() {
   const { theme, toggle } = useTheme()
   const navigate = useNavigate()
   const isMaster = profile?.role === 'master' && profile?.status === 'approved'
+
+  usePendingNotifications()
 
   const handleLogout = async () => {
     await logout()
