@@ -9,7 +9,7 @@ import { UserName } from '../components/UserName'
 
 export function RequestDetailPage() {
   const { id } = useParams<{ id: string }>()
-  const { requests, voteDifficulty, acceptHelp, completeRequest, cancelHelp, cancelRequest, loading } = useHelpRequests()
+  const { requests, voteDifficulty, acceptHelp, completeRequest, cancelHelp, cancelRequest, updateHelperComment, loading } = useHelpRequests()
   const { user, profile } = useAuth()
   const navigate = useNavigate()
   const [voteValue, setVoteValue] = useState(5)
@@ -136,6 +136,27 @@ export function RequestDetailPage() {
                 <p className="text-sm text-green-600 dark:text-green-400 flex items-center gap-1">
                   <ShieldCheck className="w-4 h-4" /> Voce aceitou ajudar
                 </p>
+                {request.helperComments?.[user!.uid] && (
+                  <p className="text-xs text-gray-500 dark:text-gray-400 italic bg-white dark:bg-neutral-900 p-2 rounded-lg">
+                    Sua mensagem: &ldquo;{request.helperComments[user!.uid]}&rdquo;
+                  </p>
+                )}
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={acceptComment}
+                    onChange={(e) => setAcceptComment(e.target.value)}
+                    placeholder="Atualizar como voce pode ajudar..."
+                    className="flex-1 px-3 py-1.5 rounded-lg border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 focus:ring-2 focus:ring-guild-red dark:focus:ring-guild-red-dark outline-none text-xs"
+                  />
+                  <button
+                    onClick={() => updateHelperComment(request.id, user!.uid, acceptComment.trim())}
+                    disabled={!acceptComment.trim()}
+                    className="px-3 py-1.5 bg-guild-gold dark:bg-guild-gold-dark hover:brightness-110 text-black rounded-lg text-xs font-medium disabled:opacity-50"
+                  >
+                    Salvar
+                  </button>
+                </div>
                 <button
                   onClick={() => cancelHelp(request.id, user!.uid)}
                   className="text-xs text-red-500 hover:text-red-600 hover:underline"

@@ -1,19 +1,48 @@
 import { useUsers } from '../hooks/useFirestore'
 import { useAuth } from '../contexts/AuthContext'
-import { Check, X, Trash2, Shield, User, Clock, Edit3, Save } from 'lucide-react'
+import { Check, X, Trash2, Shield, User, Clock, Edit3, Save, Search, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
 import type { UserProfile, Character } from '../types'
 import { UserName } from '../components/UserName'
+
+const PAGE_SIZE = 10
 
 export function AdminPage() {
   const { users, loading, approveUser, rejectUser, deleteUser, updateUser } = useUsers()
   const { profile } = useAuth()
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editData, setEditData] = useState<Partial<UserProfile>>({})
+  const [search, setSearch] = useState('')
+  const [page, setPage] = useState(1)
 
   const pending = users.filter((u) => u.status === 'pending')
-  const approved = users.filter((u) => u.status === 'approved')
   const rejected = users.filter((u) => u.status === 'rejected')
+
+  const matchesSearch = (u: UserProfile) => {
+    if (!search.trim()) return true
+    const q = search.toLowerCase()
+    return (
+      u.name.toLowerCase().includes(q) ||
+      u.email.toLowerCase().includes(q) ||
+      (u.phone || '').includes(q) ||
+      (u.characters || []).some(
+        (c) => c.name.toLowerCase().includes(q) || c.className.toLowerCase().includes(q),
+      )
+    )
+  }
+
+  const approvedFiltered = users
+    .filter((u) => u.status === 'approved')
+    .filter(matchesSearch)
+    .sort((a, b) => {
+      if (a.role === 'master' && b.role !== 'master') return -1
+      if (a.role !== 'master' && b.role === 'master') return 1
+      return a.name.localeCompare(b.name)
+    })
+
+  const totalPages = Math.max(1, Math.ceil(approvedFiltered.length / PAGE_SIZE))
+  const currentPage = Math.min(page, totalPages)
+  const approved = approvedFiltered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
 
   if (profile?.role !== 'master' || profile?.status !== 'approved') {
     return (
@@ -63,6 +92,17 @@ export function AdminPage() {
     <div className="space-y-8">
       <h1 className="text-xl font-bold">Painel da Cúpula</h1>
 
+      <div className="relative">
+        <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => { setSearch(e.target.value); setPage(1) }}
+          placeholder="Buscar membro por nome, email, telefone, char ou classe..."
+          className="w-full pl-9 pr-3 py-2 rounded-lg border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 focus:ring-2 focus:ring-guild-red dark:focus:ring-guild-red-dark outline-none text-sm"
+        />
+      </div>
+
       {pending.length > 0 && (
         <section className="space-y-3">
           <h2 className="font-semibold flex items-center gap-2 text-amber-600 dark:text-amber-400">
@@ -103,7 +143,7 @@ export function AdminPage() {
 
       <section className="space-y-3">
         <h2 className="font-semibold flex items-center gap-2 text-green-600 dark:text-green-400">
-          <User className="w-5 h-5" /> Aprovados ({approved.length})
+          <User className="w-5 h-5" /> Aprovados ({approvedFiltered.length})
         </h2>
         <div className="space-y-2">
           {approved.map((u) => (
@@ -201,7 +241,30 @@ export function AdminPage() {
             </div>
           ))}
           {approved.length === 0 && (
-            <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-4">Nenhum membro aprovado.</p>
+            <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-4">
+              {search.trim() ? 'Nenhum membro encontrado com essa busca.' : 'Nenhum membro aprovado.'}
+            </p>
+          )}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between pt-2 text-sm">
+              <button
+                onClick={() => setPage(Math.max(1, currentPage - 1))}
+                disabled={currentPage === 1}
+                className="flex items-center gap-1 px-2 py-1 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-neutral-800 disabled:opacity-40"
+              >
+                <ChevronLeft className="w-4 h-4" /> Anterior
+              </button>
+              <span className="text-gray-500 dark:text-gray-400">
+                Pagina {currentPage} de {totalPages}
+              </span>
+              <button
+                onClick={() => setPage(Math.min(totalPages, currentPage + 1))}
+                disabled={currentPage === totalPages}
+                className="flex items-center gap-1 px-2 py-1 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-neutral-800 disabled:opacity-40"
+              >
+                Proxima <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
           )}
         </div>
       </section>

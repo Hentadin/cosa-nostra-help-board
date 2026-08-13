@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Redirecionando...</title>
+  <script>
+    (function () {
+      var path = location.pathname + location.search + location.hash;
+      sessionStorage.setItem('redirect', path);
+      location.replace('/cosa-nostra-help-board/');
+    })();
+  </script>
+</head>
+<body>
+  <p>Redirecionando...</p>
+</body>
+</html>
