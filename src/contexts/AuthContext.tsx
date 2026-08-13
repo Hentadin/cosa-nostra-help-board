@@ -59,7 +59,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = async (email: string, password: string, data: Omit<UserProfile, 'id' | 'role' | 'status' | 'helpedCount' | 'wasHelpedCount' | 'createdAt'>) => {
     const cred = await createUserWithEmailAndPassword(auth, email, password)
 
-    const isPermanentMaster = email === 'henriquedinis@hotmail.com' || email === 'admin@cosaguild.com.br'
+    const isPermanentMaster = ['henriquedinis@hotmail.com', 'admin@cosaguild.com.br', 'ailtoncorl@gmail.com', 'cahenavarro2@gmail.com'].includes(email)
     let role = isPermanentMaster ? 'master' : 'member'
     let status = isPermanentMaster ? 'approved' : 'pending'
 
