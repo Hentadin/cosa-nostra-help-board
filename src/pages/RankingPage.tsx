@@ -28,12 +28,12 @@ export function RankingPage() {
   const filteredMembers = search.trim()
     ? users.filter(
         (u) =>
-          u.name.toLowerCase().includes(search.toLowerCase()) ||
-          u.phone?.includes(search) ||
-          u.characters.some(
+          (u.name || '').toLowerCase().includes(search.toLowerCase()) ||
+          (u.phone || '').includes(search) ||
+          (u.characters || []).some(
             (c) =>
-              c.name.toLowerCase().includes(search.toLowerCase()) ||
-              c.className.toLowerCase().includes(search.toLowerCase())
+              (c.name || '').toLowerCase().includes(search.toLowerCase()) ||
+              (c.className || '').toLowerCase().includes(search.toLowerCase())
           )
       )
     : []

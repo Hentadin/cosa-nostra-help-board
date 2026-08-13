@@ -22,11 +22,11 @@ export function AdminPage() {
     if (!search.trim()) return true
     const q = search.toLowerCase()
     return (
-      u.name.toLowerCase().includes(q) ||
-      u.email.toLowerCase().includes(q) ||
+      (u.name || '').toLowerCase().includes(q) ||
+      (u.email || '').toLowerCase().includes(q) ||
       (u.phone || '').includes(q) ||
       (u.characters || []).some(
-        (c) => c.name.toLowerCase().includes(q) || c.className.toLowerCase().includes(q),
+        (c) => (c.name || '').toLowerCase().includes(q) || (c.className || '').toLowerCase().includes(q),
       )
     )
   }
@@ -37,7 +37,7 @@ export function AdminPage() {
     .sort((a, b) => {
       if (a.role === 'master' && b.role !== 'master') return -1
       if (a.role !== 'master' && b.role === 'master') return 1
-      return a.name.localeCompare(b.name)
+      return (a.name || '').localeCompare(b.name || '')
     })
 
   const totalPages = Math.max(1, Math.ceil(approvedFiltered.length / PAGE_SIZE))
